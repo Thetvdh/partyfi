@@ -1,0 +1,49 @@
+{% extends "master.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %} {{ super() }} {% endblock %}
+
+{% block content %}
+    <br>
+
+    <div>
+        <form method="POST" action="/search">
+            <div class="mb-3">
+                <label class="form-label" for="title">Song Title:</label><br>
+                <input type="text" id="title" name="title" class="form-control"><br>
+            </div>
+            <button type="submit" value="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    <br>
+    <br>
+    {% if search_results %}
+    <table class="table table-dark">
+        <tr>
+            <th>Song Title</th>
+            <th>Artist</th>
+        </tr>
+        {% for item in search_results %}
+                <tr>
+                        <td>
+                            <form action="/queue" method="POST">
+                                <input type="hidden" name="uri" id="uri" value="{{ item['uri'] }}">
+                                <button type="submit" class="btn btn-dark">{{ item['title'] }}</button>
+                            </form>
+                        </td>
+                        <td> {{ item['artist'] }}</td>
+
+                </tr>
+
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <form action="/skip" method="GET">
+        <button type="submit" class="btn btn-dark">Skip</button>
+    </form>
+
+    <div>
+        <p>{{ skip_count }}/{{ user_count }}</p>
+    </div>
+
+{% endblock %}

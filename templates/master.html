@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='bootstrap.css') }}>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='bootstrap.rtl.css') }}>
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #110404;">
+                <div class="container">
+                    <a class="navbar-brand mr-4" href="/search">GroupListen</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarToggle">
+                        <div class="navbar-nav mr-auto">
+                            <a class="nav-item nav-link" href="/search">Search</a>
+                            <a class="nav-item nav-link" href="/queue">Queue</a>
+                            {% if 'username' in session %}
+                                <a class="nav-item nav-link" href="/logout">Logout</a>
+                                <a class="nav-item nav-link">Hello: {{ session['username'] }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+</nav>
+<br>
+<br>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

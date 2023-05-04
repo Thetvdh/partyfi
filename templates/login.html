@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+{% block title %}{{ title }} {% endblock %}
+{% block head %} {{ super() }} {% endblock %}
+{% block content %}
+
+    <br>
+    <form method="POST" action="/">
+        <div class="mb-3">
+            <label class="form-label" for="title">Username:</label><br>
+            <input type="text" id="username" name="username" class="form-control"><br>
+        </div>
+        <button type="submit" value="submit" class="btn btn-primary">Login</button>
+    </form>
+
+
+{% endblock %}
