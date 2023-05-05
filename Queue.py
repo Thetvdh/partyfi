@@ -16,13 +16,20 @@ class Queue:
 
     def parse_queue(self, queue):
         parsed_queue = []
-        song_name = queue['currently_playing']['name']
-        song_artist = queue['currently_playing']['artists'][0]['name']
+        if queue['currently_playing'] is not None:
+            print("[QUEUE]: ", queue)
+            song_name = queue['currently_playing']['name']
+            song_artist = queue['currently_playing']['artists'][0]['name']
 
-        song = {
-            "title": song_name,
-            "artist": song_artist
-        }
+            song = {
+                "title": song_name,
+                "artist": song_artist
+            }
+        else:
+            song = {
+                "title": "Nothing Currently playing",
+                "artist": "No Artist"
+            }
         parsed_queue.append(song)
         for track in queue['queue']:
             song_name = track['name']

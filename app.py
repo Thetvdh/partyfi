@@ -84,6 +84,9 @@ def queue():
             toast = "Added to queue successfully"
             if not qm.add_to_queue(request.form['uri']):
                 toast = "Error: Failed to add to queue, please try again"
+            with(open("request.log"), "a") as log:
+                log.write(f"{session['username']} played {request.form['uri']}\n")
+
             return render_template("index.html", toast=toast, title="GroupListen", user_count=user_count,
                                    skip_count=skip_count)
         else:

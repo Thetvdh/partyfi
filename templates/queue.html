@@ -12,8 +12,10 @@
             <th>Artist</th>
         </tr>
         <tr>
+            {% if current_queue %}
             <td>{{ current_queue[0]['title'] }}</td>
             <td>{{ current_queue[0]['artist'] }}</td>
+            {% endif %}
         </tr>
     </table>
     <br><br>
@@ -22,13 +24,14 @@
             <th>Title</th>
             <th>Artist</th>
         </tr>
-
-    {% for song in current_queue[1::] %}
-        <tr>
-            <td>{{ song['title'] }}</td>
-            <td>{{ song['artist'] }}</td>
-        </tr>
-    {% endfor %}
+    {% if current_queue %}
+        {% for song in current_queue[1::] %}
+            <tr>
+                <td>{{ song['title'] }}</td>
+                <td>{{ song['artist'] }}</td>
+            </tr>
+        {% endfor %}
+    {% endif %}
 
     </table>
 {% endblock %}
