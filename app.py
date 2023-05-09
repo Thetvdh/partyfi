@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-
 import Queue
 import Search
 import secrets
 from math import ceil
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.secret_key = secrets.token_bytes(256)
@@ -13,13 +14,16 @@ user_count = 0
 users = []
 voted = []
 
+load_dotenv(".env")
+
 
 @app.route('/', methods=["GET", "POST"])
 def login():
+    session.clear()
     global user_count
     global users
     if request.method == "POST":
-        if request.form['username'] not in users:
+        if request.form['username'] not in users and request.form['password'] == os.getenv("PASSWORD"):
             session['username'] = request.form['username']
             user_count += 1
             users.append(session['username'])
@@ -72,19 +76,21 @@ def queue():
     global user_count
     global skip_count
     global users
+    print(session)
     print("USER COUNT =", user_count)
     print("USERS:", users)
     print("SKIP COUNT =", skip_count)
     if 'username' not in session:
         return redirect(url_for("login"))
-    qm = Queue.Queue()
+
     title = "Queue"
+    qm = Queue.Queue()
     try:
         if request.method == 'POST':
             toast = "Added to queue successfully"
             if not qm.add_to_queue(request.form['uri']):
                 toast = "Error: Failed to add to queue, please try again"
-            with(open("request.log"), "a") as log:
+            with(open("request.log", "a")) as log:
                 log.write(f"{session['username']} played {request.form['uri']}\n")
 
             return render_template("index.html", toast=toast, title="GroupListen", user_count=user_count,
@@ -135,4 +141,4 @@ def server_error(error):
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=8080, debug=False)
+    app.run('0.0.0.0', port=5000, debug=False)

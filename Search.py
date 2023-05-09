@@ -1,9 +1,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from dotenv import load_dotenv
 from pprint import pprint
-
-load_dotenv(".env")
 
 
 class Search:
@@ -45,4 +42,3 @@ class Search:
     def get_tracks(self, title, debug=False):
         tracks = self.api_get_tracks(title)
         return self.parse_tracks(tracks, debug)
-

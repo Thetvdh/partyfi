@@ -1,8 +1,5 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from dotenv import load_dotenv
-
-load_dotenv(".env")
 
 
 class Queue:
@@ -17,7 +14,6 @@ class Queue:
     def parse_queue(self, queue):
         parsed_queue = []
         if queue['currently_playing'] is not None:
-            print("[QUEUE]: ", queue)
             song_name = queue['currently_playing']['name']
             song_artist = queue['currently_playing']['artists'][0]['name']
 
@@ -56,3 +52,7 @@ class Queue:
     def skip(self):
         self.spotify.next_track()
 
+
+if __name__ == '__main__':
+    qm = Queue()
+    qm.api_get_queue()
