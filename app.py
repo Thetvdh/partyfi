@@ -5,6 +5,7 @@ import secrets
 from math import ceil
 import os
 from dotenv import load_dotenv
+import time
 
 app = Flask(__name__)
 app.secret_key = secrets.token_bytes(256)
@@ -93,8 +94,7 @@ def queue():
             with(open("request.log", "a")) as log:
                 log.write(f"{session['username']} played {request.form['uri']}\n")
 
-            return render_template("index.html", toast=toast, title="GroupListen", user_count=user_count,
-                                   skip_count=skip_count)
+            return redirect(url_for("queue"))
         else:
             current_queue = qm.get_queue()
             return render_template("queue.html", current_queue=current_queue, title=title)
@@ -139,6 +139,11 @@ def server_error(error):
     print("[SERVER ERROR]", error)
     return redirect(url_for("login")), 500
 
+@app.errorhandler(503)
+def rate_handler(error):
+    print("[SERVER ERROR]", error)
+    time.sleep(2)
+    return redirect(url_for("queue")), 503
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=False)

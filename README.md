@@ -11,3 +11,4 @@ This app is highly experimental at this stage and was designed for my personal u
 
 If you wish to use it, go for it however do NOT host it publicly. Use for small parties / gatherings etc.
 
+Run get_token to generate your OAuth token
