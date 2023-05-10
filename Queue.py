@@ -5,8 +5,8 @@ from spotipy.oauth2 import SpotifyOAuth
 class Queue:
 
     def __init__(self):
-        scope = "user-read-playback-state user-read-currently-playing user-modify-playback-state"
-        self.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+        self.scope = "user-read-playback-state user-read-currently-playing user-modify-playback-state"
+        self.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=self.scope))
 
     def api_get_queue(self):
         return self.spotify.queue()
@@ -48,10 +48,16 @@ class Queue:
             return True
         except spotipy.exceptions.SpotifyException:
             return False
+        except spotipy.SpotifyOauthError:
+            self.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=self.scope))
+            return False
 
     def skip(self):
-        self.spotify.next_track()
-
+        try:
+            self.spotify.next_track()
+        except spotipy.SpotifyOauthError:
+            self.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=self.scope))
+            return False
 
 if __name__ == '__main__':
     qm = Queue()

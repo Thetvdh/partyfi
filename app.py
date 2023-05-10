@@ -139,11 +139,13 @@ def server_error(error):
     print("[SERVER ERROR]", error)
     return redirect(url_for("login")), 500
 
+
 @app.errorhandler(503)
 def rate_handler(error):
     print("[SERVER ERROR]", error)
     time.sleep(2)
     return redirect(url_for("queue")), 503
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=False)
