@@ -9,7 +9,10 @@ class Queue:
         self.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=self.scope))
 
     def api_get_queue(self):
-        return self.spotify.queue()
+        try:
+            return self.spotify.queue()
+        except spotipy.SpotifyOauthError:
+            self.spotify = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=self.scope))
 
     def parse_queue(self, queue):
         parsed_queue = []

@@ -72,12 +72,11 @@ def search():  # put application's code here
         return render_template("index.html", title="GroupListen", user_count=user_count, skip_count=skip_count)
 
 
-@app.route("/queue", methods=['GET', 'POST', 'PUT'])
+@app.route("/queue", methods=['GET', 'POST'])
 def queue():
     global user_count
     global skip_count
     global users
-    print(session)
     print("USER COUNT =", user_count)
     print("USERS:", users)
     print("SKIP COUNT =", skip_count)
@@ -88,9 +87,7 @@ def queue():
     qm = Queue.Queue()
     try:
         if request.method == 'POST':
-            toast = "Added to queue successfully"
-            if not qm.add_to_queue(request.form['uri']):
-                toast = "Error: Failed to add to queue, please try again"
+            qm.add_to_queue(request.form['uri'])
             with(open("request.log", "a")) as log:
                 log.write(f"{session['username']} played {request.form['uri']}\n")
 
